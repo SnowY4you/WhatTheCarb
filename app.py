@@ -79,14 +79,14 @@ def display_nutrition_data(data):
     main_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
     # Title
-    tk.Label(main_frame, text="Nutritional Analysis", font=("Verdana", 16, "bold"), bg="#5C33CC").grid(row=0, column=0, columnspan=3, pady=(10, 5))
+    tk.Label(main_frame, text="Nutritional Analysis", font=("Verdana", 14, "bold"), fg="white", bg="#5C33CC").grid(row=0, column=0, columnspan=3, pady=(10, 5))
     # Header
     tk.Label(main_frame, text="Nutrient", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A", borderwidth=2, relief="solid").grid(row=1, column=0, sticky="ew")
     tk.Label(main_frame, text="Amount", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A", borderwidth=2, relief="solid").grid(row=1, column=1, sticky="ew")
     tk.Label(main_frame, text="% av RDI", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A", borderwidth=2, relief="solid").grid(row=1, column=2, sticky="ew")
 
     for i, (key, label) in enumerate(main_output.items(), start=2):
-        if key == "SUGAR":
+        if key == "CHOCDF":
             tk.Label(main_frame, text=label, font=("Verdana", 12, "bold"), bg="#4400CC", borderwidth=2, relief="solid").grid(row=i, column=0, sticky="ew")
             quantity = format_number(data.get("totalNutrients", {}).get(key, {}).get("quantity", "N/A"))
             unit = data.get("totalNutrients", {}).get(key, {}).get("unit", "")
@@ -104,14 +104,14 @@ def display_nutrition_data(data):
 
     # Secondary right output table
     right_frame = tk.Frame(analysis_frame, bg="#B9DFFE", bd=2, relief=tk.SOLID, highlightbackground="#035394")
-    right_frame.grid(row=1, column=0, columnspan=2, sticky="nsew", padx=10, pady=10)
+    right_frame.grid(row=0, column=2, sticky="nsew", padx=10, pady=10)
 
     # Title
-    tk.Label(right_frame, text="Nutritional Macros Ratio (% of calories):\nCarbs goal ratio: 45% to 65%\nProtein goal ratio: 10% to 30%\nFat goal ratio: 20% to 30%", font=("Verdana", 14, "bold"), bg="#B9DFFE", justify=tk.LEFT).grid(row=0, column=0, columnspan=3, pady=(10, 5))
+    tk.Label(right_frame, text="Nutritional Macros Ratio\n(% of energy from Carbohydrates):\n\nCarbs goal ratio: 45% to 65%\nProtein goal ratio: 10% to 30%\nFat goal ratio: 20% to 30%", font=("Verdana", 14, "bold"), fg="white", bg="#7733FF", justify=tk.LEFT).grid(row=0, column=0, columnspan=3, pady=(10, 5))
     # Header
     tk.Label(right_frame, text="Macronutrient", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A", borderwidth=2, relief="solid").grid(row=1, column=0, sticky="ew")
     tk.Label(right_frame, text="Amount", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A", borderwidth=2, relief="solid").grid(row=1, column=1, sticky="ew")
-    tk.Label(right_frame, text="% of daily value", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A", borderwidth=2, relief="solid").grid(row=1, column=2, sticky="ew")
+    tk.Label(right_frame, text="% of daily intake", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A", borderwidth=2, relief="solid").grid(row=1, column=2, sticky="ew")
 
     secondary_right_output = {
         "Carbs": "CHOCDF",
@@ -133,12 +133,33 @@ def display_nutrition_data(data):
         tk.Label(right_frame, text=f"{quantity} {unit}", font=("Verdana", 12), borderwidth=2, relief="solid").grid(row=i, column=1, sticky="ew")
         tk.Label(right_frame, text=f"{ratio:.2f}%", font=("Verdana", 12), fg=ratio_color, borderwidth=2, relief="solid").grid(row=i, column=2, sticky="ew")
 
+    # Add diet_info
+    diet_info = ""
+    if data.get("totalNutrients", {}).get("FIBTG", {}).get("quantity", 0) > 5:
+        diet_info += "High-Fiber\n"
+    if (float(data.get("totalNutrients", {}).get("PROCNT", {}).get("quantity", 0)) /
+        float(data.get("totalNutrients", {}).get("ENERC_KCAL", {}).get("quantity", 1))) * 100 > 50:
+        diet_info += "High-Protein\n"
+    if (float(data.get("totalNutrients", {}).get("CHOCDF", {}).get("quantity", 0)) /
+        float(data.get("totalNutrients", {}).get("ENERC_KCAL", {}).get("quantity", 1))) * 100 < 20:
+        diet_info += "Low-Carb\n"
+    if (float(data.get("totalNutrients", {}).get("FAT", {}).get("quantity", 0)) /
+        float(data.get("totalNutrients", {}).get("ENERC_KCAL", {}).get("quantity", 1))) * 100 < 15:
+        diet_info += "Low-Fat\n"
+    if data.get("totalNutrients", {}).get("NA", {}).get("quantity", 0) < 140:
+        diet_info += "Low-Sodium\n"
+    if (float(data.get("totalNutrients", {}).get("CHOCDF", {}).get("quantity", 0)) /
+        float(data.get("totalNutrients", {}).get("ENERC_KCAL", {}).get("quantity", 1))) * 100 > 65:
+        diet_info += "High-Carb\n"
+
+    tk.Label(right_frame, text=diet_info, font=("Verdana", 12, "bold"), fg="#005580", bg="#CCDDFF", borderwidth=2, relief="solid").grid(row=i+1, column=2, sticky="ew")
+
     # Secondary left output table
     left_frame = tk.Frame(analysis_frame, bg="#B9DFFE", bd=2, relief=tk.SOLID, highlightbackground="#035394")
     left_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
 
     # Title
-    tk.Label(left_frame, text="Micronutrition's", font=("Verdana", 14, "bold"), bg="#B9DFFE").grid(row=0, column=0, columnspan=3, pady=(10, 5))
+    tk.Label(left_frame, text="Micronutrition's", font=("Verdana", 14, "bold"), fg="white", bg="#C44DFF").grid(row=0, column=0, columnspan=3, pady=(10, 5))
     # Header
     tk.Label(left_frame, text="Nutrient", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A", borderwidth=2, relief="solid").grid(row=1, column=0, sticky="ew")
     tk.Label(left_frame, text="Amount", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A", borderwidth=2, relief="solid").grid(row=1, column=1, sticky="ew")
@@ -211,7 +232,7 @@ instructions_frame = tk.Frame(frame, bg="#079CAA")
 instructions_frame.pack(anchor=tk.CENTER)
 
 instructions_text = tk.Label(
-    instructions_frame, text="Instructions:\n1. Enter the ingredients.\n2. Click 'Analyze Ingredients'.\n3. View the nutritional analysis.\n\nExample: 100 gram meatballs or 2 dl cooked pasta",
+    instructions_frame, text="Instructions:\n1. Enter the ingredients.\n2. Click 'Analyze Ingredients'.\n3. View the nutritional analysis.\n\nExample: 14 cocktail pork meatballs or\n2 dl cooked durum wheat pasta",
     font=("Verdana", 12), bg="#079CAA", fg="#FFFFFF", justify=tk.LEFT
 )
 instructions_text.pack(side=tk.LEFT, padx=10, anchor=tk.W)
@@ -227,7 +248,7 @@ image_label.pack(side=tk.RIGHT, padx=20)
 input_frame = tk.Frame(frame, bg="#079CAA", bd=2, relief=tk.SOLID, highlightbackground="#08EAF3")
 input_frame.pack(anchor=tk.CENTER, pady=2)
 
-entry_recipe_text = tk.Text(input_frame, font=("Verdana", 12), height=10)
+entry_recipe_text = tk.Text(input_frame, font=("Verdana", 12), height=4)
 entry_recipe_text.pack(side=tk.LEFT, pady=5, ipadx=10, ipady=10)
 
 analyze_button = tk.Button(
@@ -248,7 +269,7 @@ analyze_button.pack(pady=10)
 canvas = tk.Canvas(frame, bg="#B9DFFE")
 canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.YES)
 
-scrollbar = tk.Scrollbar(frame, orient=tk.VERTICAL, command=canvas.yview)
+scrollbar = tk.Scrollbar(frame, orient=tk.VERTICAL, command=canvas.yview, takefocus=True)
 scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 canvas.configure(yscrollcommand=scrollbar.set)
 
