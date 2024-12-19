@@ -1,3 +1,4 @@
-tkinter==8.6.13
-requests==2.32.3
-pillow==11.0.0
+Pillow==11.0.0
+python-dotenv==1.0.1
+Requests==2.32.3
+wasabi==1.1.3
