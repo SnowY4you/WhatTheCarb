@@ -1,4 +1,4 @@
-# WhatTheCarb
+# WhatTheCarb ![Icon](https://github.com/SnowY4you/WhatTheCarb/blob/main/nutionsapp.png?raw=true)
 
 A little app to make life easier
 
@@ -15,9 +15,7 @@ To get started with WhatTheCarb, follow these steps:
    git clone https://github.com/SnowY4you/WhatTheCarb.git
    cd WhatTheCarb
 
-   Here's a sample `README.md` for your project:
-
-2. **Install the required packages:**
+ 2. **Install the required packages:**
    ```bash
    pip install -r requirements.txt
    ```
@@ -66,15 +64,14 @@ All food nutrient data is enriched with diet, allergy, and health labeling, as c
 I came up with the idea for WhatTheCarb because my 12-year-old son has had type 1 diabetes since he was 4 years old. This app aims to make life easier for people like my son by providing quick and accurate nutritional information for their meals.
 
 ## Screenshots
+
 Here are some screenshots of the WhatTheCarb application:
 
+![Description of screenshot 1](https://github.com/SnowY4you/WhatTheCarb/blob/main/WhatTheCarb02.png?raw=true)
+*Description of screenshot 1*
 
-Description of screenshot 1
-
-
-Description of screenshot 2
-
-Replace `path/to/your/screenshot1.png` and `path/to/your/screenshot2.png` with the actual paths to your screenshot image files. The descriptions can be updated to provide more context about what each screenshot shows. This will help users understand the functionality and interface of your application better.
+![Description of screenshot 2](https://github.com/SnowY4you/WhatTheCarb/blob/main/WhatTheCarb01.png?raw=true)
+*Description of screenshot 2*
 
 ## Additional Resources
 
