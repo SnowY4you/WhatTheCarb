@@ -81,5 +81,6 @@ Here are some screenshots of the WhatTheCarb application:
 ---
 
 Thank you for using WhatTheCarb! If you have any questions or feedback, please feel free to reach out.
+![Edamam Badge](https://via.placeholder.com/150)
 
 
