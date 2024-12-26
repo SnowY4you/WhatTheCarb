@@ -81,6 +81,8 @@ Here are some screenshots of the WhatTheCarb application:
 ---
 
 Thank you for using WhatTheCarb! If you have any questions or feedback, please feel free to reach out.
-![Edamam Badge](https://via.placeholder.com/150)
+<p align="center">
+  <img src="https://github.com/SnowY4you/WhatTheCarb/blob/main/Edamam_Badge_White.svg?raw=true" alt="Edamam Badge" width="150" height="150">
+</p>
 
 
