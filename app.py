@@ -84,6 +84,34 @@ def display_nutrition_data(data, ingredient):
     totalNutrients = data.get('totalNutrients', {})
     healthLabels = data.get('healthLabels', [])
 
+    main_output = {
+        "ENERC_KCAL": "Energy",
+        "FAT": "Total Fat",
+        "FASAT": "Saturated Fat",
+        "CHOCDF": "Total Carbohydrates",
+        "FIBTG": "Dietary Fiber",
+        "SUGAR": "Sugars",
+        "PROCNT": "Protein",
+        "NA": "Sodium",
+        "CA": "Calcium",
+        "MG": "Magnesium",
+        "K": "Potassium",
+        "FE": "Iron",
+        "ZN": "Zinc",
+        "P": "Phosphorus",
+        "VITA_RAE": "Vitamin A",
+        "VITC": "Vitamin C",
+        "THIA": "Thiamin (B1)",
+        "RIBF": "Riboflavin (B2)",
+        "NIA": "Niacin (B3)",
+        "VITB6A": "Vitamin B6",
+        "FOLDFE": "Folate (Equivalent)",
+        "VITB12": "Vitamin B12",
+        "VITD": "Vitamin D",
+        "TOCPHA": "Vitamin E",
+        "VITK1": "Vitamin K"
+    }
+
     # Main frame for total nutrients
     main_frame = tk.Frame(analysis_frame, bg="#B9DFFE", bd=2, relief=tk.SOLID, highlightbackground="#035394")
     main_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
@@ -94,15 +122,15 @@ def display_nutrition_data(data, ingredient):
 
     # Headers Main Frame
     tk.Label(main_frame, text="Label", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A", borderwidth=2,
-             relief="solid").grid(row=1, column=1, sticky="ew")
+             relief="solid").grid(row=1, column=0, sticky="ew")
     tk.Label(main_frame, text="Quantity", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A", borderwidth=2,
-             relief="solid").grid(row=1, column=2, sticky="ew")
+             relief="solid").grid(row=1, column=1, sticky="ew")
     tk.Label(main_frame, text="Unit", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A", borderwidth=2,
-             relief="solid").grid(row=1, column=3, sticky="ew")
+             relief="solid").grid(row=1, column=2, sticky="ew")
 
     for i, (key, label) in enumerate(main_output.items(), start=2):
         if key == "CHOCDF":
-            tk.Label(main_frame, text=label, font=("Verdana", 12, "bold"), bg="#4400CC", borderwidth=2, relief="solid").grid(row=i, column=0, sticky="ew")
+            tk.Label(main_frame, text=label, font=("Verdana", 12, "bold"), fg="white", bg="#4400CC", borderwidth=2, relief="solid").grid(row=i, column=0, sticky="ew")
             quantity = format_number(data.get("totalNutrients", {}).get(key, {}).get("quantity", "N/A"))
             unit = data.get("totalNutrients", {}).get(key, {}).get("unit", "")
             daily_value = format_number(data.get("totalDaily", {}).get(key, {}).get("quantity", "N/A"))
@@ -116,14 +144,14 @@ def display_nutrition_data(data, ingredient):
             tk.Label(main_frame, text=f"{quantity} {unit}", font=("Verdana", 12), borderwidth=2, relief="solid").grid(row=i, column=1, sticky="ew")
             tk.Label(main_frame, text=f"{daily_value}%", font=("Verdana", 12), borderwidth=2, relief="solid").grid(row=i, column=2, sticky="ew")
 
-    # Right  upper output table for macronutrient ratios
+    # Right upper output table for macronutrient ratios
     right_upper_frame = tk.Frame(analysis_frame, bg="#B9DFFE", bd=2, relief=tk.SOLID, highlightbackground="#035394")
-    right_upper_frame.grid(row=0, column=2, sticky="nsew", padx=10, pady=10)
+    right_upper_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
 
-    # Tittle right upper frame
+    # Title right upper frame
     tk.Label(right_upper_frame,
-             text="Macronutrient Ratios\n(% of energy from Macronutrients):\n\nCarbs goal ratio: 45% to 65%\nProtein goal ratio: 10% to 30%\nFat goal ratio: 20% to 30%",
-             font=("Verdana", 14, "bold"), fg="white", bg="#7733FF", justify=tk.LEFT).grid(row=0, column=0,
+             text="Macronutrient Ratios\n(% of energy from Macronutrients):",
+             font=("Verdana", 14, "bold"), fg="white", bg="#B088DE", justify=tk.LEFT).grid(row=0, column=0,
                                                                                            columnspan=3, pady=(10, 5))
 
     # Headers right upper frame
@@ -171,23 +199,36 @@ def display_nutrition_data(data, ingredient):
         tk.Label(right_upper_frame, text=f"{details['ratio']:.2f}%", font=("Verdana", 12), fg=ratio_color,
                  borderwidth=2, relief="solid").grid(row=i, column=2, sticky="ew")
 
-    # Healt label frame for additional information
-    health_label_frame = tk.Frame(analysis_frame, bg="#B9DFFE", bd=2, relief=tk.SOLID, highlightbackground="#035394")
-    health_label_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
+    # Information box below the right upper frame output
+    information_box = tk.Frame(right_upper_frame, bg="#B088DE", bd=2, relief=tk.SOLID, highlightbackground="#035394")
+    information_box.grid(row=i + 1, column=0, columnspan=3, sticky="nsew", padx=10, pady=(10, 0))
 
-    # Tittle right lower frame
-    tk.Label(health_label_frame, text="Healt labels associated with these ingredients / portions",
+    tk.Label(information_box,
+             text="Carbs goal ratio: 45% to 65%\nProtein goal ratio: 10% to 30%\nFat goal ratio: 20% to 30%\n\nThese recommendations\nare based on the Swedish NNR\n(Nordic Nutrition Recommendations)\nfor a pretween with type 1 Diabetes",
+             font=("Verdana", 14, "bold"), fg="white", bg="#8A88DE", justify=tk.LEFT).grid(row=0, column=0, pady=(10, 5))
+
+
+
+    # Health label frame for additional information
+    health_label_frame = tk.Frame(analysis_frame, bg="#B9DFFE", bd=2, relief=tk.SOLID, highlightbackground="#035394")
+    health_label_frame.grid(row=0, column=2, rowspan=2, sticky="nsew", padx=10, pady=(0, 10))
+
+    # Title health label frame
+    tk.Label(health_label_frame, text="Health labels",
              font=("Verdana", 14, "bold"), fg="white", bg="#C44DFF").grid(row=0, column=0, columnspan=3, pady=(10, 5))
 
     # Headers health label frame
-    tk.Label(health_label_frame_frame, text="Healt labels", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A",
+    tk.Label(health_label_frame, text="Labels", font=("Verdana", 12, "bold"), fg="white", bg="#3A127A",
              borderwidth=2, relief="solid").grid(row=1, column=0, sticky="ew")
 
+    # Display health labels
+    for i, label in enumerate(healthLabels, start=2):
+        tk.Label(health_label_frame, text=label, font=("Verdana", 12), borderwidth=2, relief="solid").grid(row=i, column=0, sticky="ew", padx=(5, 5), pady=(2, 2))
 
 # Set up the main application window
 root = tk.Tk()
 root.title("WhatTheCarb - Nutrition Analysis")
-root.geometry("1400x900")
+root.geometry("1200x900")
 root.configure(bg="#B9DFFE")
 
 # Creating a menu bar
